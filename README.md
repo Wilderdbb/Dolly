@@ -17,7 +17,7 @@ by Databricks employees in capability domains from the InstructGPT paper, includ
 information extraction, open QA and summarization. `dolly-v2-12b` is not a state-of-the-art model, but does exhibit surprisingly 
 high quality instruction following behavior not characteristic of the foundation model on which it is based.  
 
-**Owner**: Databricks, Inc., 
+**Owner**: Databricks, Inc.
 
 ## Model Overview
 `dolly-v2-12b` is a 12 billion parameter causal language model created by [Databricks](https://databricks.com/) that is derived from 
