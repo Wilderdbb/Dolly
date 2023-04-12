@@ -1,7 +1,5 @@
 ---
 license: mit
-datasets:
-- databricks/databricks-dolly-15k
 language:
 - en
 library_name: transformers
