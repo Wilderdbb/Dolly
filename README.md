@@ -1,7 +1,7 @@
 ---
 license: mit
 datasets:
-- tatsu-lab/alpaca
+- databricks/databricks-dolly-15k
 language:
 - en
 library_name: transformers
