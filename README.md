@@ -54,8 +54,8 @@ maximize the potential of all individuals and organizations.
 
 ### Benchmark Metrics
 
-Below you'll find various models benchmark performance on the [EleutherAI LLM Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness) 
-model results are sorted by geometric mean to produce an intelligible ordering.  These results demonstrate that `dolly-v2-12b` is not state of the art, 
+Below you'll find various models benchmark performance on the [EleutherAI LLM Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness); 
+model results are sorted by geometric mean to produce an intelligible ordering. As outlined above, these results demonstrate that `dolly-v2-12b` is not state of the art, 
 and in fact underperforms `dolly-v1-6b` in some evaluation benchmarks. We believe this owes to the composition and size of the underlying fine tuning datasets, 
 but a robust statement as to the sources of these variations requires further study.  
 
