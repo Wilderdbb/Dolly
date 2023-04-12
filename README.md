@@ -48,7 +48,7 @@ associations.
 by Databricks employees during a period spanning March and April 2023 and includes passages from Wikipedia as references passages
 for instruction categories like closed QA and summarization. To our knowledge it does not contain obscenity, intellectual property or
 personally identifying information about non-public figures, but it may contain typos and factual errors.
-The dataset may also reflect biases found in Wikipedia, such as the tendency towards factual errors. Finally, the dataset likely reflects
+The dataset may also reflect biases found in Wikipedia. Finally, the dataset likely reflects
 the interests and semantic choices of Databricks employees, a demographic which is not representative of the global population at large.
 
 Databricks is committed to ongoing research and development efforts to develop helpful, honest and harmless AI technologies that 
