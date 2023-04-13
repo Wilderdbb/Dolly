@@ -4,7 +4,7 @@
     "GPTNeoXForCausalLM"
   ],
   "custom_pipelines": {
-    "instruction-following": {
+    "text-generation": {
       "impl": "instruct_pipeline.InstructionTextGenerationPipeline",
       "pt": "AutoModelForCausalLM",
       "tf": "TFAutoModelForCausalLM"
