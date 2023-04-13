@@ -24,27 +24,42 @@ on a [~15K record instruction corpus](https://github.com/databrickslabs/dolly/tr
 
 ## Usage
 
-To use the model with the `transformers` library on a machine with GPUs:
+To use the model with the `transformers` library on a machine with GPUs, first make sure you have the `transformers` and `accelerate` libraries installed.
+In a Databricks notebook you could run:
 
 ```
-from transformers import pipeline
-
-instruct_pipeline = pipeline(model="databricks/dolly-v2-12b", trust_remote_code=True, device_map="auto")
+%pip install accelerate>=0.12.0 transformers[torch]==4.25.1
 ```
 
-You can then use the pipeline to answer instructions:
-
-```
-instruct_pipeline("Explain to me the difference between nuclear fission and fusion.")
-```
-
-To reduce memory usage you can load the model with `bfloat16`:
+The instruction following pipeline can be loaded using the `pipeline` function as shown below.  This loads a custom `InstructionTextGenerationPipeline` 
+found in the model repo [here](https://huggingface.co/databricks/dolly-v2-12b/blob/main/instruct_pipeline.py), which is why `trust_remote_code=True` is required.
+Including `torch_dtype=torch.bfloat16` is generally recommended if this type is supported in order to reduce memory usage.  It does not appear to impact output quality.
+It is also fine to remove it if there is sufficient memory.
 
 ```
 import torch
 from transformers import pipeline
 
-instruct_pipeline = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
+generate_text = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
+```
+
+You can then use the pipeline to answer instructions:
+
+```
+generate_text("Explain to me the difference between nuclear fission and fusion.")
+```
+
+Alternatively, if you prefer to not use `trust_remote_code=True` you can download [instruct_pipeline.py](https://huggingface.co/databricks/dolly-v2-12b/blob/main/instruct_pipeline.py),
+store it alongside your notebook, and construct the pipeline yourself from the loaded model and tokenizer:
+
+```
+from instruct_pipeline import InstructionTextGenerationPipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("databricks/dolly-v2-12b", padding_side="left")
+model = AutoModelForCausalLM.from_pretrained("databricks/dolly-v2-12b", device_map="auto")
+
+generate_text = InstructionTextGenerationPipeline(model=model, tokenizer=tokenizer)
 ```
 
 
