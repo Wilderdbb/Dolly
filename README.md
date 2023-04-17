@@ -32,7 +32,7 @@ In a Databricks notebook you could run:
 ```
 
 The instruction following pipeline can be loaded using the `pipeline` function as shown below.  This loads a custom `InstructionTextGenerationPipeline` 
-found in the model repo [here](https://huggingface.co/databricks/dolly-v2-12b/blob/main/instruct_pipeline.py), which is why `trust_remote_code=True` is required.
+found in the model repo [here](https://huggingface.co/databricks/dolly-v2-3b/blob/main/instruct_pipeline.py), which is why `trust_remote_code=True` is required.
 Including `torch_dtype=torch.bfloat16` is generally recommended if this type is supported in order to reduce memory usage.  It does not appear to impact output quality.
 It is also fine to remove it if there is sufficient memory.
 
@@ -46,20 +46,72 @@ generate_text = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bflo
 You can then use the pipeline to answer instructions:
 
 ```
-generate_text("Explain to me the difference between nuclear fission and fusion.")
+res = generate_text("Explain to me the difference between nuclear fission and fusion.")
+print(res[0]["generated_text"])
 ```
 
-Alternatively, if you prefer to not use `trust_remote_code=True` you can download [instruct_pipeline.py](https://huggingface.co/databricks/dolly-v2-12b/blob/main/instruct_pipeline.py),
+Alternatively, if you prefer to not use `trust_remote_code=True` you can download [instruct_pipeline.py](https://huggingface.co/databricks/dolly-v2-3b/blob/main/instruct_pipeline.py),
 store it alongside your notebook, and construct the pipeline yourself from the loaded model and tokenizer:
 
 ```
+import torch
 from instruct_pipeline import InstructionTextGenerationPipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained("databricks/dolly-v2-12b", padding_side="left")
-model = AutoModelForCausalLM.from_pretrained("databricks/dolly-v2-12b", device_map="auto")
+model = AutoModelForCausalLM.from_pretrained("databricks/dolly-v2-12b", device_map="auto", torch_dtype=torch.bfloat16)
 
 generate_text = InstructionTextGenerationPipeline(model=model, tokenizer=tokenizer)
+```
+
+### LangChain Usage
+
+To use the pipeline with LangChain, you must set `return_full_text=True`, as LangChain expects the full text to be returned 
+and the default for the pipeline is to only return the new text.
+
+```
+import torch
+from transformers import pipeline
+
+generate_text = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bfloat16,
+                         trust_remote_code=True, device_map="auto", return_full_text=True)
+```
+
+You can create a prompt that either has only an instruction or has an instruction with context:
+
+```
+from langchain import PromptTemplate, LLMChain
+from langchain.llms import HuggingFacePipeline
+
+# template for an instrution with no input
+prompt = PromptTemplate(
+    input_variables=["instruction"],
+    template="{instruction}")
+
+# template for an instruction with input
+prompt_with_context = PromptTemplate(
+    input_variables=["instruction", "context"],
+    template="{instruction}\n\nInput:\n{context}")
+
+hf_pipeline = HuggingFacePipeline(pipeline=generate_text)
+
+llm_chain = LLMChain(llm=hf_pipeline, prompt=prompt)
+llm_context_chain = LLMChain(llm=hf_pipeline, prompt=prompt_with_context)
+```
+
+Example predicting using a simple instruction:
+
+```
+print(llm_chain.predict(instruction="Explain to me the difference between nuclear fission and fusion.").lstrip())
+```
+
+Example predicting using an instruction with context:
+
+```
+context = """George Washington (February 22, 1732[b] – December 14, 1799) was an American military officer, statesman,
+and Founding Father who served as the first president of the United States from 1789 to 1797."""
+
+print(llm_context_chain.predict(instruction="When was George Washington president?", context=context).lstrip())
 ```
 
 
