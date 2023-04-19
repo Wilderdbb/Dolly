@@ -35,7 +35,7 @@ on a [~15K record instruction corpus](https://github.com/databrickslabs/dolly/tr
 To use the model with the `transformers` library on a machine with GPUs, first make sure you have the `transformers` and `accelerate` libraries installed.
 In a Databricks notebook you could run:
 
-```
+```python
 %pip install accelerate>=0.12.0 transformers[torch]==4.25.1
 ```
 
@@ -44,7 +44,7 @@ found in the model repo [here](https://huggingface.co/databricks/dolly-v2-3b/blo
 Including `torch_dtype=torch.bfloat16` is generally recommended if this type is supported in order to reduce memory usage.  It does not appear to impact output quality.
 It is also fine to remove it if there is sufficient memory.
 
-```
+```python
 import torch
 from transformers import pipeline
 
@@ -53,7 +53,7 @@ generate_text = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bflo
 
 You can then use the pipeline to answer instructions:
 
-```
+```python
 res = generate_text("Explain to me the difference between nuclear fission and fusion.")
 print(res[0]["generated_text"])
 ```
@@ -61,7 +61,7 @@ print(res[0]["generated_text"])
 Alternatively, if you prefer to not use `trust_remote_code=True` you can download [instruct_pipeline.py](https://huggingface.co/databricks/dolly-v2-3b/blob/main/instruct_pipeline.py),
 store it alongside your notebook, and construct the pipeline yourself from the loaded model and tokenizer:
 
-```
+```python
 import torch
 from instruct_pipeline import InstructionTextGenerationPipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -77,7 +77,7 @@ generate_text = InstructionTextGenerationPipeline(model=model, tokenizer=tokeniz
 To use the pipeline with LangChain, you must set `return_full_text=True`, as LangChain expects the full text to be returned 
 and the default for the pipeline is to only return the new text.
 
-```
+```python
 import torch
 from transformers import pipeline
 
@@ -87,7 +87,7 @@ generate_text = pipeline(model="databricks/dolly-v2-12b", torch_dtype=torch.bflo
 
 You can create a prompt that either has only an instruction or has an instruction with context:
 
-```
+```python
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import HuggingFacePipeline
 
@@ -109,13 +109,13 @@ llm_context_chain = LLMChain(llm=hf_pipeline, prompt=prompt_with_context)
 
 Example predicting using a simple instruction:
 
-```
+```python
 print(llm_chain.predict(instruction="Explain to me the difference between nuclear fission and fusion.").lstrip())
 ```
 
 Example predicting using an instruction with context:
 
-```
+```python
 context = """George Washington (February 22, 1732[b] – December 14, 1799) was an American military officer, statesman,
 and Founding Father who served as the first president of the United States from 1789 to 1797."""
 
