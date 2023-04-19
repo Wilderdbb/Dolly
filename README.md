@@ -18,7 +18,7 @@ high quality instruction following behavior not characteristic of the foundation
 Dolly v2 is also available in these smaller models sizes:
 
 * [dolly-v2-7b](https://huggingface.co/databricks/dolly-v2-7b), a 6.9 billion parameter based on `pythia-6.9b`
-* [dolly-v2-3b](https://huggingface.co/databricks/dolly-v2-7b), a 2.8 billion parameter based on `pythia-2.8b`
+* [dolly-v2-3b](https://huggingface.co/databricks/dolly-v2-3b), a 2.8 billion parameter based on `pythia-2.8b`
 
 Please refer to the [dolly GitHub repo](https://github.com/databrickslabs/dolly#getting-started-with-response-generation) for tips on 
 running inference for various GPU configurations.
