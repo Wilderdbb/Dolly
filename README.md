@@ -15,6 +15,14 @@ by Databricks employees in capability domains from the InstructGPT paper, includ
 information extraction, open QA and summarization. `dolly-v2-12b` is not a state-of-the-art model, but does exhibit surprisingly 
 high quality instruction following behavior not characteristic of the foundation model on which it is based.  
 
+Dolly v2 is also available in these smaller models sizes:
+
+* [dolly-v2-7b](https://huggingface.co/databricks/dolly-v2-7b), a 6.9 billion parameter based on `pythia-6.9b`
+* [dolly-v2-3b](https://huggingface.co/databricks/dolly-v2-7b), a 2.8 billion parameter based on `pythia-2.8b`
+
+Please refer to the [dolly GitHub repo](https://github.com/databrickslabs/dolly#getting-started-with-response-generation) for tips on 
+running inference for various GPU configurations.
+
 **Owner**: Databricks, Inc.
 
 ## Model Overview
