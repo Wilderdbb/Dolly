@@ -4,6 +4,8 @@ language:
 - en
 library_name: transformers
 inference: false
+datasets:
+- databricks/databricks-dolly-15k
 ---
 # dolly-v2-12b Model Card
 ## Summary
