@@ -38,7 +38,7 @@ To use the model with the `transformers` library on a machine with GPUs, first m
 In a Databricks notebook you could run:
 
 ```python
-%pip install accelerate>=0.12.0 transformers[torch]==4.25.1
+%pip install "accelerate>=0.16.0,<1" "transformers[torch]>=4.28.1,<5" "torch>=1.13.1,<2"
 ```
 
 The instruction following pipeline can be loaded using the `pipeline` function as shown below.  This loads a custom `InstructionTextGenerationPipeline` 
