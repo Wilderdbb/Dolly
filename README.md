@@ -118,7 +118,7 @@ print(llm_chain.predict(instruction="Explain to me the difference between nuclea
 Example predicting using an instruction with context:
 
 ```python
-context = """George Washington (February 22, 1732[b] – December 14, 1799) was an American military officer, statesman,
+context = """George Washington (February 22, 1732[b] - December 14, 1799) was an American military officer, statesman,
 and Founding Father who served as the first president of the United States from 1789 to 1797."""
 
 print(llm_context_chain.predict(instruction="When was George Washington president?", context=context).lstrip())
